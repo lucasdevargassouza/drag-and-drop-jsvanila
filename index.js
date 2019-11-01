@@ -1,64 +1,56 @@
-var itemDraging;
+var classNameItemDrag = 'item-drag';
+var classNameDropHere = 'drop-here';
+var classNameItemPlaceholder = 'placeholder-drag';
 
+var itemDraging;
 (() => {
-	var list_itens = document.getElementsByClassName('item-drag');
+	var list_itens = document.getElementsByClassName(classNameItemDrag);
 	for (var i = list_itens.length - 1; i >= 0; i--) {
 		list_itens[i].draggable = true;
 
-		if (list_itens[i].id == undefined || list_itens[i].id == null || list_itens[i].id == "") { list_itens[i].id = "randonid_" + parseInt(Math.random() * 10 * 10 * 1000 * 999999) }
-
 		list_itens[i].ondragstart = (event) => { placeholderRemove(event); itemDraging = event.target; };
-		list_itens[i].ondrop = dropItem;
+		list_itens[i].ondragend = () => { dropItem(); };
 	}
 
-	var list_itens_drop_hire = document.getElementsByClassName('drop-here');
+	var list_itens_drop_hire = document.getElementsByClassName(classNameDropHere);
 	for (var i = list_itens_drop_hire.length - 1; i >= 0; i--) {
 		var element = list_itens_drop_hire[i];
-
-		// Define um id random.
-		if (element.id !== undefined || element.id !== null || element.id !== "") { element.id = "randonid_" + parseInt(Math.random() * 10 * 10 * 1000 * 999999) }
-
 
 		element.ondragenter = placeholderInsert;
 
 		element.ondragover = placeholderInsert;
-
-		element.ondrop = dropItem;
-
 	}
 })();
 
-
 function dropItem() {
-	itemDraging.classList.remove("placeholder-drag");
+	itemDraging.classList.remove(classNameItemPlaceholder);
 	itemDraging.style.opacity = 1;
 }
-
 
 function placeholderInsert(eventDrag) {
 	eventDrag.preventDefault();
 
-	if (eventDrag.target.parentNode.getElementsByClassName('placeholder-drag').length > 1) {
+	if (eventDrag.target.parentNode.getElementsByClassName(classNameItemPlaceholder).length > 1) {
 		return;
 	}
 
 
-	if (eventDrag.target.classList.contains("drop-here")) {
+	if (eventDrag.target.classList.contains(classNameDropHere)) {
 
 		placeholderRemove();
 
-		itemDraging.classList.add("placeholder-drag");
+		itemDraging.classList.add(classNameItemPlaceholder);
 		itemDraging.style.opacity = 0.5;
 
 		eventDrag.target.appendChild(itemDraging);
 
-	} else if (eventDrag.target.parentNode.classList.contains("drop-here")) {
+	} else if (eventDrag.target.parentNode.classList.contains(classNameDropHere)) {
 
-		itemDraging.classList.add("placeholder-drag");
+		itemDraging.classList.add(classNameItemPlaceholder);
 		itemDraging.style.opacity = 0.5;
 
 
-		if (eventDrag.target.classList.contains("item-drag") && !eventDrag.target.classList.contains("placeholder-drag")) {
+		if (eventDrag.target.classList.contains(classNameItemDrag) && !eventDrag.target.classList.contains(classNameItemPlaceholder)) {
 
 			placeholderRemove();
 
@@ -77,7 +69,7 @@ function placeholderInsert(eventDrag) {
 
 // Remove o placeholder da tela!
 function placeholderRemove() {
-	var itens = document.getElementsByClassName('placeholder-drag');
+	var itens = document.getElementsByClassName(classNameItemPlaceholder);
 	if (itens.length > 0) {
 		for (var i = 0; i < itens.length; i++) {
 			itens[i].parentNode.removeChild(itens[i]);
