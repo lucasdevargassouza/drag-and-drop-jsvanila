@@ -1,0 +1,17 @@
+* {
+	margin: none;
+	padding: none;
+	background-color: #f3f3f3;
+}
+
+.drop-here {
+	width: 100%;
+	min-height: 10px;
+	background-color: gray;
+	border: 1px solid black;
+}
+
+.item-drag {
+	min-height: 30px;
+	background-color: white;
+}
